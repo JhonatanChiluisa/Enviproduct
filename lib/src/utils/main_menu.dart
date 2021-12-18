@@ -2,7 +2,7 @@ import 'package:application_enviproduct_v01/src/widgets/entregas_widget.dart';
 import 'package:application_enviproduct_v01/src/widgets/inicio_widget.dart';
 import 'package:application_enviproduct_v01/src/widgets/mapa_widget.dart';
 import 'package:application_enviproduct_v01/src/widgets/perfil_widget.dart';
-import 'package:application_enviproduct_v01/src/widgets/proveedores_widget.dart';
+//import 'package:application_enviproduct_v01/src/widgets/proveedores_widget.dart';
 import 'package:flutter/material.dart';
 
 class MenuItem {

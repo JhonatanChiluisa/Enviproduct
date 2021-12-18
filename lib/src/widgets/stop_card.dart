@@ -14,17 +14,14 @@ class StopCard extends StatelessWidget {
             leading: const Icon(Icons.alt_route, color:Colors.blue, size: 40.0),
             title: Text(model.name ?? ""),
             subtitle: Text(model.locationType ?? ""),
-            //trailing: const Icon(Icons.tungsten_outlined, color:Colors.amber, size: 35.0),
           ),
           ListTile(
             leading: const Icon(Icons.code , color:Colors.black, size: 25.0),
             title: Text(model.code ?? ""),
-            //trailing: const Icon(Icons.tungsten_outlined, color:Colors.amber, size: 35.0),
           ),
           ListTile(
             leading: const Icon(Icons.vpn_key  , color:Colors.black, size: 25.0),
             title: Text(model.stopId ?? ""),
-            //trailing: const Icon(Icons.tungsten_outlined, color:Colors.amber, size: 35.0),
           ),
         ],
       ),

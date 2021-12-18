@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "999600008991",
+    "project_id": "backendenviproduct",
+    "storage_bucket": "backendenviproduct.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999600008991:android:c230c1e57559115d360a2a",
+        "android_client_info": {
+          "package_name": "com.example.application_enviproduct_v01"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999600008991-onoj1b50cjk4j0qkjlo4rpmtj1gjnr44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_NCGQ7dRiOrQa5ShcJU6lUFbh7QwPjRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999600008991-onoj1b50cjk4j0qkjlo4rpmtj1gjnr44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
