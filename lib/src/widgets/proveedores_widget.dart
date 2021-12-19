@@ -11,7 +11,7 @@ class ProveedoresWidget extends StatelessWidget {
       children: [
         const Icon(Icons.home, size: 50.0),
         Text("Proveedores", style: Theme.of(context).textTheme.headline4)
-      ],
+      ]
     ));
   }
 }

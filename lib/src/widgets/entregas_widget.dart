@@ -1,32 +1,32 @@
-import 'package:application_enviproduct_v01/src/models/stop_model.dart';
-import 'package:application_enviproduct_v01/src/services/stop_service.dart';
-import 'package:application_enviproduct_v01/src/widgets/stop_card.dart';
+import 'package:application_enviproduct_v01/src/models/entregas_model.dart';
+import 'package:application_enviproduct_v01/src/services/entregas_service.dart';
+import 'package:application_enviproduct_v01/src/widgets/entregas_card.dart';
 import 'package:flutter/material.dart';
 
-class EntregasWidget extends StatefulWidget {
-  const EntregasWidget({Key? key}) : super(key: key);
+class EntregaWidget extends StatefulWidget {
+  const EntregaWidget({Key? key}) : super(key: key);
 
   @override
-  State<EntregasWidget> createState() => _EntregasWidgetState();
+  State<EntregaWidget> createState() => _EntregaWidgetState();
 }
 
-class _EntregasWidgetState extends State<EntregasWidget> {
-  final StopService _stopservice = StopService();
-  List<Paradas>? _listStop;
+class _EntregaWidgetState extends State<EntregaWidget> {
+  final EntregasAPPService _entregaService = EntregasAPPService();
+  List<Entregas>? _listEntregas;
 
   @override
-  void initState() {
+
+   void initState() {
     super.initState();
     _downloadContent();
   }
-  @override
   Widget build(BuildContext context) {
-    return _listStop == null
+    return _listEntregas == null
         ? const Center(
             child: SizedBox(
                 height: 50.0, width: 50.0, child: CircularProgressIndicator()),
           )
-        : _listStop!.isEmpty
+        : _listEntregas!.isEmpty
             ? const Center(
                 child: SizedBox(child: Text('No hay paradas disponibles')),
               )
@@ -34,14 +34,13 @@ class _EntregasWidgetState extends State<EntregasWidget> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 15.0, horizontal: 7.0),
                 child: ListView(
-                  children: _listStop!.map((e) => StopCard(model: e)).toList(),
+                  children: _listEntregas!.map((e) => CardEntregas(model: e)).toList(),
                 ),
               );
   }
-
   _downloadContent() {
-    _stopservice.getStop().then((value) {
-      _listStop = value;
+    _entregaService.getEntregas().then((value) {
+      _listEntregas = value;
       setState(() {});
     });
   }
