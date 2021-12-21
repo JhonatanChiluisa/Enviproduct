@@ -8,18 +8,28 @@ class CardEntregas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 12.0,
-      child: ListTile(
-        tileColor: Color.alphaBlend(Colors.amber.shade50, Colors.lime),
-        leading: const Icon(Icons.calendar_today),
-        title: Text(model.fieldsProto!.nombre!.stringValue.toString(),
-            style: Theme.of(context).textTheme.headline6),
-        subtitle: Text(model.fieldsProto!.luegardestino!.stringValue.toString(),
-            style: Theme.of(context).textTheme.subtitle2),
-        trailing: Text(
-            "Costo: " +
-                model.fieldsProto!.precio!.integerValue.toString() +
-                " \$",
-            style: Theme.of(context).textTheme.headline6),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.person_outline, color: Colors.blue, size: 40),
+            title: Text(model.fieldsProto!.nombre!.stringValue.toString(),
+                style: Theme.of(context).textTheme.headline6),
+            subtitle: Text(model.fieldsProto!.luegardestino!.stringValue.toString(),
+                style: Theme.of(context).textTheme.subtitle2),
+            trailing: Text(
+                "Costo: " +
+                    model.fieldsProto!.precio!.integerValue.toString() +
+                    " \$",
+                style: Theme.of(context).textTheme.headline6),
+          ),
+          ListTile(
+             leading: const Icon(Icons.date_range, color: Colors.black, size: 25),
+            title: Text(model.fieldsProto!.fechaentrega!.stringValue.toString()),
+            subtitle: Text(model.fieldsProto!.producto!.stringValue.toString()),
+            trailing: Text("Cantidad: " + model.fieldsProto!.cantidad!.integerValue.toString(),
+          ),
+          )
+        ],
       ),
     );
   }

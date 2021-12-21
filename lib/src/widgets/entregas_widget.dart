@@ -20,6 +20,7 @@ class _EntregaWidgetState extends State<EntregaWidget> {
     super.initState();
     _downloadContent();
   }
+  @override
   Widget build(BuildContext context) {
     return _listEntregas == null
         ? const Center(

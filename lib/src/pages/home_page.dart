@@ -1,41 +1,45 @@
+import 'package:application_enviproduct_v01/providers/main_provider.dart';
 import 'package:application_enviproduct_v01/src/utils/main_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatefulWidget {
+
+ final List<String> _options = ["Inicio", "Mapa", "Paradas", "Entregas"];
+
+
+
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-  final List<String> _options = ["Inicio", "Mapa", "Entregas", "Perfil"];
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+     final mainProvider = Provider.of<MainProvider>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: Text('Enviproduct - ' + _options[_selectedIndex])),
-      body: contentWidgets[_selectedIndex],
+          leading: SizedBox.square(
+              dimension: 60.0,
+              child: Switch(
+                  value: mainProvider.mode,
+                  onChanged: (bool value) async {
+                    mainProvider.mode = value;
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setBool("mode", value);
+                  })),
+          title: Text('Enviproduct - ' + _options[mainProvider.index])),
+      body: contentWidgets[mainProvider.index],
       bottomNavigationBar: BottomNavigationBar(
           onTap: (int index) {
-            _selectedIndex = index;
-            //print("3. Cambio de estado");
-            setState(() {});
+            mainProvider.index = index;
           },
           type: BottomNavigationBarType.fixed,
           items: menuOptions
               .map((e) =>
                   BottomNavigationBarItem(label: e.label, icon: Icon(e.icon)))
               .toList(),
-          currentIndex: _selectedIndex),
+          currentIndex: mainProvider.index),
     );
   }
+  
 }

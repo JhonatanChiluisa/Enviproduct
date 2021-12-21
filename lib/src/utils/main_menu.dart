@@ -14,8 +14,8 @@ List<MenuItem> menuOptions = [
   MenuItem("Menu", Icons.menu),
   //MenuItem("Proveedores", Icons.production_quantity_limits),
   MenuItem("Mapa", Icons.map_outlined),
-  MenuItem("Paradas", Icons.assignment_outlined),
-  MenuItem("Entregas", Icons.account_circle_outlined )
+  MenuItem("Paradas", Icons.location_on_outlined),
+  MenuItem("Entregas", Icons.assignment_outlined )
 ];
 
 List<Widget> contentWidgets = [

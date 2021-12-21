@@ -1,11 +1,21 @@
+import 'package:application_enviproduct_v01/providers/main_provider.dart';
 import 'package:application_enviproduct_v01/src/pages/home_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => MainProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,13 +23,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(),
-      debugShowCheckedModeBanner: false,
-    );
+    final mainProvider = Provider.of<MainProvider>(context, listen: true);
+    return FutureBuilder<bool>(
+        future: mainProvider.getPreferences(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ScreenUtilInit(
+              designSize: const Size(360, 690),
+              builder: () => MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                theme: ThemeData(brightness: mainProvider.mode == true ? Brightness.light: Brightness.dark),
+                home: const HomePage(),
+              ),
+            );
+          }
+           return const SizedBox.square(
+              dimension: 100.0, child: CircularProgressIndicator());
+        });
   }
 }

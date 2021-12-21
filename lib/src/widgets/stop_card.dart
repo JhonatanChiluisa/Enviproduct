@@ -7,11 +7,12 @@ class StopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 12.0,
       child: Column(
         children: [
           ListTile(
             trailing: const Checkbox(value: false, onChanged: null),
-            leading: const Icon(Icons.alt_route, color:Colors.blue, size: 40.0),
+            leading: const Icon(Icons.alt_route, color: Colors.blue, size: 40.0),
             title: Text(model.name ?? ""),
             subtitle: Text(model.locationType ?? ""),
           ),
