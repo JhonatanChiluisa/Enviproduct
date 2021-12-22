@@ -1,4 +1,5 @@
-import 'package:application_enviproduct_v01/providers/main_provider.dart';
+
+import 'package:application_enviproduct_v01/src/providers/main_provider.dart';
 import 'package:application_enviproduct_v01/src/utils/main_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
