@@ -5,13 +5,12 @@ class MapaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(Icons.map_outlined, size: 50.0),
-        Text("Mapa", style: Theme.of(context).textTheme.headline4)
-      ],
-    ));
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Image.asset("assets/images/logo_GoogleMaps.png",fit: BoxFit.cover )
+        ),
+      ));
+    
   }
 }
