@@ -29,7 +29,7 @@ class _PerfilDetailsFotoWidgetState extends State<PerfilDetailsFotoWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 14.0),
             child: Text(
-              "Cree su foto de perfil",
+              "Selecionar foto",
               style: Theme.of(context).textTheme.headline6,
             ),
           ),

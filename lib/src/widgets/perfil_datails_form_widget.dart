@@ -44,20 +44,34 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                       vertical: 14.0, horizontal: 7.0),
                   child: Column(
                     children: [
-                      const Text("Cedula:"),
-                      TextFormField(),
-                      const Text("Nombre:"),
-                      TextFormField(),
-                      const Text("Edad:"),
-                      TextFormField(),
-                      const Text("Tipo de licencia:"),
-                      TextFormField(),
-                      const Text("Cooperativa de transporte:"),
-                      TextFormField(),
-                      const Text("Celular:"),
-                      TextFormField(),
-                      const Text("Dirección:"),
-                      TextFormField(),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: "Cedula: "),
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: "Nombre: "),
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: "Edad: "),
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: "Tipo de licencia: "),
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: "Cooperativa de transporte: "),
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: "Celular: "),
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: "Dirección: "),
+                      ),
                       ElevatedButton(
                           onPressed: () {
                           // Validate returns true if the form is valid, or false otherwise.
@@ -69,7 +83,7 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                             );
                           }
                         },
-                        child: const Text('Guardar'),
+                        child: const Icon(Icons.save, size: 35.0,)
                       ),
                       ],
                   ),
