@@ -11,7 +11,7 @@ class MenuItem {
   MenuItem(this.label, this.icon);
 }
 List<MenuItem> menuOptions = [
-  MenuItem("Menu", Icons.menu),
+  MenuItem("Menú", Icons.menu),
   //MenuItem("Proveedores", Icons.production_quantity_limits),
   MenuItem("Mapa", Icons.map_outlined),
   MenuItem("Paradas", Icons.location_on_outlined),

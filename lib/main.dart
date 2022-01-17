@@ -34,9 +34,8 @@ class MyApp extends StatelessWidget {
               builder: () => MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'Flutter Demo',
-                theme: ThemeData(brightness: mainProvider.mode == true ? Brightness.light: Brightness.dark),
+                theme: ThemeData(brightness: mainProvider.mode == true ? Brightness.light: Brightness.dark, primarySwatch: Colors.green),
                 home: const HomePage(),
-                
               ),
             );
           }

@@ -5,10 +5,10 @@ class MapaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return const SafeArea(
       child: Scaffold(
         body: Center(
-          child: Image.asset("assets/images/logo_GoogleMaps.png",fit: BoxFit.cover )
+          child: Icon(Icons.map, size: 60.0,)
         ),
       ));
     

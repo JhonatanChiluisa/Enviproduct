@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:application_enviproduct_v01/src/pages/home_page.dart';
+import 'package:application_enviproduct_v01/src/services/foto_perfil.service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +17,8 @@ class PerfilDetailsFotoWidget extends StatefulWidget {
 class _PerfilDetailsFotoWidgetState extends State<PerfilDetailsFotoWidget> {
   final _formKey = GlobalKey<FormState>();
   File? _imagenPerfil;
-  final ImagePicker _picker = ImagePicker();
+  String? _urlString;
+  final FotoPerfilService _fotosService = FotoPerfilService();
   @override
   void initState() {
     super.initState();
@@ -51,9 +55,9 @@ class _PerfilDetailsFotoWidgetState extends State<PerfilDetailsFotoWidget> {
                       Stack(
                         children: [
                           SizedBox.square(
-                            dimension: 150.h,
+                            dimension: 200.h,
                             child: Padding(
-                              padding: const EdgeInsets.all(7.0),
+                              padding: const EdgeInsets.all(3.0),
                               child: _imagenPerfil == null
                                   ? Image.asset(
                                       "assets/images/imagen_Perfil.jpg")
@@ -76,8 +80,45 @@ class _PerfilDetailsFotoWidgetState extends State<PerfilDetailsFotoWidget> {
                                 onPressed: () => _selectImage(ImageSource.gallery),
                                 icon: const Icon(Icons.image, size: 40.0)),
                             IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.save, size: 40.0)),
+                                onPressed: () async {
+                                   await _enviaralservidor();
+                                   showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                "Foto añadida",
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              content: SingleChildScrollView(
+                                                  child:
+                                                      ListBody(children: const [
+                                                Text(
+                                                  "Perfil completado exitosamente !!",
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ])),
+                                              actions: [
+                                                TextButton(
+                                                    child: const Text(
+                                                      "Aceptar",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const HomePage()),
+                                                      );
+                                                    }),
+                                              ],
+                                            );
+                                          });
+                                   },
+                                icon: const Icon(Icons.save, size: 40.0)
+                            ),
                           ],
                         ),
                       ),
@@ -91,12 +132,24 @@ class _PerfilDetailsFotoWidgetState extends State<PerfilDetailsFotoWidget> {
   }
 
   Future _selectImage(ImageSource source) async {
-    XFile? pickedFile = await _picker.pickImage(source: source);
-    if (pickedFile != null) {
-      _imagenPerfil = File(pickedFile.path);
-    } else {
-      _imagenPerfil = null;
+     final imageCamera = await ImagePicker().pickImage(source: source);
+    if (imageCamera == null) return;
+    final imageTemporary = File(imageCamera.path);
+    _imagenPerfil = imageTemporary;
+    if (_imagenPerfil != null) {
+      _urlString = await _fotosService.uploadImage(_imagenPerfil!);
     }
     setState(() {});
   }
+
+  Future<void> _enviaralservidor() async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
+      CollectionReference reference =
+          FirebaseFirestore.instance.collection('fotoperfil');
+      await reference.add({
+        "url": _urlString,
+      });
+    });
+  }
+
 }

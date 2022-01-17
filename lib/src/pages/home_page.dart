@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
- final List<String> _options = ["Inicio", "Mapa", "Paradas", "Entregas"];
+ final List<String> _options = ["Menú", "Mapa", "Paradas", "Entregas"];
 
 
 
@@ -22,13 +22,15 @@ class HomePage extends StatelessWidget {
           leading: SizedBox.square(
               dimension: 60.0,
               child: Switch(
+                activeColor: Colors.lightGreen,
+                inactiveThumbColor:Colors.black,
                   value: mainProvider.mode,
                   onChanged: (bool value) async {
                     mainProvider.mode = value;
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.setBool("mode", value);
                   })),
-          title: Text('Enviproduct - ' + _options[mainProvider.index])),
+          title: Text('Enviproducts - ' + _options[mainProvider.index])),
       body: contentWidgets[mainProvider.index],
       bottomNavigationBar: BottomNavigationBar(
           onTap: (int index) {

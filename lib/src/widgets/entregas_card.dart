@@ -11,7 +11,7 @@ class CardEntregas extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: const Icon(Icons.person_outline, color: Colors.blue, size: 40),
+            leading: const Icon(Icons.person_outline, color: Colors.teal, size: 40),
             title: Text(model.fieldsProto!.nombre!.stringValue.toString(),
                 style: Theme.of(context).textTheme.headline6),
             subtitle: Text(model.fieldsProto!.luegardestino!.stringValue.toString(),

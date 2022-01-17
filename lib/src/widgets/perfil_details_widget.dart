@@ -13,7 +13,7 @@ class _PerfilDetailsWidgetState extends State<PerfilDetailsWidget>
     with SingleTickerProviderStateMixin {
   final List<Tab> _myTabs = <Tab>[
     const Tab(text: 'Datos del Perfil'),
-    const Tab(text: 'Foto del Perfil'),
+    const Tab(text: 'Foto de Perfil'),
   ];
 
   late TabController _tabController;

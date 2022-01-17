@@ -12,7 +12,7 @@ class StopCard extends StatelessWidget {
         children: [
           ListTile(
             trailing: const Checkbox(value: false, onChanged: null),
-            leading: const Icon(Icons.alt_route, color: Colors.blue, size: 40.0),
+            leading: const Icon(Icons.alt_route, color: Colors.teal, size: 40.0),
             title: Text(model.name ?? ""),
             subtitle: Text(model.locationType ?? ""),
           ),

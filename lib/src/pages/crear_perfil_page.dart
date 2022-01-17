@@ -15,7 +15,7 @@ class CrearPerfilPage extends StatelessWidget {
             pinned: true,
             expandedHeight: 180.h,
             flexibleSpace: FlexibleSpaceBar(
-              background:Image.asset("assets/images/imagen_Perfil.jpg",fit: BoxFit.cover ),
+              background: Image.asset("assets/images/imagen_Perfil.jpg",fit: BoxFit.cover ),
               
               ),
           ),
