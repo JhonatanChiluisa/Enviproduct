@@ -22,14 +22,18 @@ class _EntregaWidgetState extends State<EntregaWidget> {
   }
   @override
   Widget build(BuildContext context) {
-    return _listEntregas == null
+    return SafeArea(child: Scaffold(
+      appBar: AppBar(
+        title: const Text("Pendientes"), 
+        ) ,
+      body: _listEntregas == null
         ? const Center(
             child: SizedBox(
                 height: 50.0, width: 50.0, child: CircularProgressIndicator()),
           )
         : _listEntregas!.isEmpty
             ? const Center(
-                child: SizedBox(child: Text('No hay paradas disponibles')),
+                child: SizedBox(child: Text('No hay entregas disponibles')),
               )
             : Container(
                 padding:
@@ -37,7 +41,8 @@ class _EntregaWidgetState extends State<EntregaWidget> {
                 child: ListView(
                   children: _listEntregas!.map((e) => CardEntregas(model: e)).toList(),
                 ),
-              );
+              ),
+      ));
   }
   _downloadContent() {
     _entregaService.getEntregas().then((value) {

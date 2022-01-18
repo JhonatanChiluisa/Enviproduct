@@ -1,8 +1,11 @@
 
 import 'package:application_enviproduct_v01/src/pages/crear_perfil_page.dart';
+
 import 'package:application_enviproduct_v01/src/pages/velocimetro_page.dart';
+import 'package:application_enviproduct_v01/src/widgets/calendario_widget.dart';
 import 'package:application_enviproduct_v01/src/widgets/entregas_widget.dart';
 import 'package:application_enviproduct_v01/src/widgets/mapa_widget.dart';
+import 'package:application_enviproduct_v01/src/widgets/proveedor_list_widget.dart';
 
 import 'package:flutter/material.dart';
 
@@ -54,12 +57,21 @@ class InicioWidget extends StatelessWidget {
           } ,
             ),
           ),
-          const Card(
+          Card(
             elevation: 7.0,
             child: ListTile(
-              leading: Icon(Icons.calendar_today_rounded, size: 40.0,),
-              title: Text('Calendario', style: TextStyle(fontSize: 20.0),),
-              trailing: Icon(Icons.arrow_forward_ios, color: Colors.teal),
+              leading: const Icon(Icons.calendar_today_rounded, size: 40.0,),
+              title: const Text('Calendario', style: TextStyle(fontSize: 20.0),),
+              trailing: const Icon(Icons.arrow_forward_ios, color: Colors.teal),
+              onTap: () {
+            Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) =>
+                    const CalendarioWidget(),
+              ),
+            );
+          },
             ),
           ),
           Card(
@@ -97,13 +109,21 @@ class InicioWidget extends StatelessWidget {
           }
             ),
           ),
-          const Card(
-
+          Card(
             elevation: 7.0,
             child: ListTile(
-              leading: Icon(Icons.business_rounded, size: 40.0,),
-              title: Text('Proveedores', style: TextStyle(fontSize: 20.0),),
-              trailing: Icon(Icons.arrow_forward_ios, color: Colors.teal),
+              leading: const Icon(Icons.business_rounded, size: 40.0,),
+              title: const Text('Proveedores', style: TextStyle(fontSize: 20.0),),
+              trailing: const Icon(Icons.arrow_forward_ios, color: Colors.teal),
+              onTap: () {
+            Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) =>
+                    const ProveedorListWidget(),
+              ),
+            );
+          }
             ),
           ),
       ]

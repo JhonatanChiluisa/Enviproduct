@@ -5,10 +5,13 @@ class MapaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
-        body: Center(
-          child: Icon(Icons.map, size: 60.0,)
+        appBar: AppBar(
+          title: const Text("Ubicación actual"),
+          ),
+        body: const Center(
+          child: Icon(Icons.map, size: 80.0,)
         ),
       ));
     
