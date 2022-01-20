@@ -41,7 +41,7 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
       appBar: AppBar(
         title: const Text("Nuevo Proveedor"),
         centerTitle: true,
-        ),
+      ),
       body: SingleChildScrollView(
           child: Stack(
         alignment: AlignmentDirectional.topCenter,
@@ -97,6 +97,10 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
                             }).toList(),
                           ),
                           TextFormField(
+
+                              validator: (value) {
+                                return _validateNombre(value!);
+                              },
                               keyboardType: TextInputType.text,
                               initialValue: _model.nombre,
                               onSaved: (value) {
@@ -104,9 +108,11 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
                                 _model.nombre = value.toString();
                               },
                               decoration:
-                                  const InputDecoration(labelText: "Nombre:")
-                              ),
+                                  const InputDecoration(labelText: "Nombre:")),
                           TextFormField(
+                              validator: (value) {
+                                return _validateLocalizacion(value!);
+                              },
                               keyboardType: TextInputType.text,
                               initialValue: _model.localizacion,
                               onSaved: (value) {
@@ -114,9 +120,11 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
                                 _model.localizacion = value.toString();
                               },
                               decoration: const InputDecoration(
-                                  labelText: "Localización:")
-                              ),
+                                  labelText: "Localización:")),
                           TextFormField(
+                              validator: (value) {
+                                return _validateContacto(value!);
+                              },
                               keyboardType: TextInputType.text,
                               initialValue: _model.contacto,
                               onSaved: (value) {
@@ -124,8 +132,7 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
                                 _model.contacto = value.toString();
                               },
                               decoration: const InputDecoration(
-                                  labelText: "Contacto:")
-                              ),
+                                  labelText: "Contacto:")),
                           _onSaving
                               ? const Padding(
                                   padding: EdgeInsets.symmetric(vertical: 20.0),
@@ -134,7 +141,7 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 20.0),
                                   child: Tooltip(
-                                    message: "Registrar insumo utilizado",
+                                    message: "Registrar proveedor",
                                     child: IconButton(
                                         onPressed: () async {
                                           if (!_formKey.currentState!
@@ -151,8 +158,10 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
                                             Navigator.pop(context);
                                           }
                                         },
-                                      
-                                        icon: const Icon(Icons.save, size: 40.0,)),
+                                        icon: const Icon(
+                                          Icons.save,
+                                          size: 40.0,
+                                        )),
                                   ),
                                 )
                         ],
@@ -165,21 +174,22 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
       )),
     );
   }
-  /*String? _validateNombre(String value) {
-    return (value.length < 5)
-        ? "Debe ingresar un nombre con al menos 15 caracteres"
+
+  String? _validateNombre(String value) {
+    return (value.isEmpty)
+        ? "Debe ingresar un nombre del proveedor"
         : null; //Validación se cumple al retorna null
   }
 
   String? _validateLocalizacion(String value) {
-    return (value.length < 15)
-        ? "Debe ingresar una localizacion con al menos 30 caracteres"
+    return (value.isEmpty)
+        ? "Debe ingresar su localización"
         : null; //Validación se cumple al retorna null
   }
 
   String? _validateContacto(String value) {
-    return (value.length < 10)
-        ? "Debe ingresar datos de contacto de al menos 30 caracteres"
+    return (value.isEmpty)
+        ? "Debe ingresar el numero de contacto"
         : null; //Validación se cumple al retorna null
-  }*/
+  }
 }

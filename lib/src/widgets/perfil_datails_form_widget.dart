@@ -15,7 +15,6 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
   final _formKey = GlobalKey<FormState>();
   late Perfil _perfil;
 
-
   final cedula = TextEditingController();
   final nombre = TextEditingController();
   final edad = TextEditingController();
@@ -60,6 +59,9 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                   child: Column(
                     children: [
                       TextFormField(
+                        validator: (value) {
+                          return _validateCedula(value!);
+                        },
                         controller: cedula,
                         keyboardType: TextInputType.number,
                         decoration:
@@ -69,6 +71,9 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                         },
                       ),
                       TextFormField(
+                        validator: (value) {
+                          return _validateNombre(value!);
+                        },
                         controller: nombre,
                         keyboardType: TextInputType.text,
                         decoration:
@@ -78,6 +83,9 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                         },
                       ),
                       TextFormField(
+                        validator: (value) {
+                          return _validateEdad(value!);
+                        },
                         controller: edad,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(labelText: "Edad: "),
@@ -86,6 +94,9 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                         },
                       ),
                       TextFormField(
+                        validator: (value) {
+                          return _validateLicencia(value!);
+                        },
                         controller: tipolicencia,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
@@ -95,6 +106,9 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                         },
                       ),
                       TextFormField(
+                        validator: (value) {
+                          return _validateCooperativa(value!);
+                        },
                         controller: cooperativa,
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
@@ -104,6 +118,9 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                         },
                       ),
                       TextFormField(
+                        validator: (value) {
+                          return _validateCelular(value!);
+                        },
                         controller: celular,
                         keyboardType: TextInputType.number,
                         decoration:
@@ -113,6 +130,9 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                         },
                       ),
                       TextFormField(
+                        validator: (value) {
+                          return _validateDireccion(value!);
+                        },
                         controller: direccion,
                         keyboardType: TextInputType.text,
                         decoration:
@@ -120,47 +140,50 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
                         onSaved: (value) {
                           _perfil.direccion = value.toString();
                         },
-                      ), 
+                      ),
                       IconButton(
-                        onPressed: () async {
-                          await _enviaralservidor();
-                          showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                "Datos añadidos",
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              content: SingleChildScrollView(
-                                                  child:
-                                                      ListBody(children: const [
-                                                Text(
-                                                  "Continue con su foto de perfil..",
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ])),
-                                              actions: [
-                                                TextButton(
-                                                    child: const Text(
-                                                      "Aceptar",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                const CrearPerfilPage()),
-                                                      );
-                                                    }),
-                                              ],
+                          onPressed: () async {
+                            if (!_formKey.currentState!
+                                  .validate()) return;
+                            setState(() {});
+                            await _enviaralServidor();
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      "Datos añadidos",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    content: SingleChildScrollView(
+                                        child: ListBody(children: const [
+                                      Text(
+                                        "Continue con su foto de perfil..",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ])),
+                                    actions: [
+                                      TextButton(
+                                          child: const Text(
+                                            "Aceptar",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const CrearPerfilPage()),
                                             );
-                                          });
+                                          }),
+                                    ],
+                                  );
+                                });
                           },
-                        icon: const Icon(Icons.save, size: 40.0,)
-                      ),      
+                          icon: const Icon(
+                            Icons.save,
+                            size: 40.0,
+                          )),
                     ],
                   ),
                 )),
@@ -170,7 +193,7 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
     );
   }
 
-  Future<void> _enviaralservidor() async {
+  Future<void> _enviaralServidor() async {
     FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       CollectionReference reference =
           FirebaseFirestore.instance.collection('perfil');
@@ -184,5 +207,47 @@ class _PerfilDetailsFormWidgetState extends State<PerfilDetailsFormWidget> {
         "direccion": direccion.text,
       });
     });
+  }
+
+  String? _validateCedula(String value) {
+    return (value.isEmpty)
+        ? "Debe ingresar su cedula"
+        : null; //Validación se cumple al retorna null
+  }
+
+  String? _validateNombre(String value) {
+    return (value.isEmpty)
+        ? "Debe ingresar su nombre"
+        : null; //Validación se cumple al retorna null
+  }
+
+  String? _validateEdad(String value) {
+    return (value.isEmpty)
+        ? "Debe ingresar su edad"
+        : null; //Validación se cumple al retorna null
+  }
+
+  String? _validateLicencia(String value) {
+    return (value.isEmpty)
+        ? "Debe ingresar el tipo de Licencia"
+        : null; //Validación se cumple al retorna null
+  }
+
+  String? _validateCooperativa(String value) {
+    return (value.isEmpty)
+        ? "Debe ingresar la comperativa o ninguna"
+        : null; //Validación se cumple al retorna null
+  }
+
+  String? _validateCelular(String value) {
+    return (value.isEmpty)
+        ? "Debe ingresar su número celular"
+        : null; //Validación se cumple al retorna null
+  }
+
+  String? _validateDireccion(String value) {
+    return (value.isEmpty)
+        ? "Debe ingresar su direccion de residencia"
+        : null; //Validación se cumple al retorna null
   }
 }

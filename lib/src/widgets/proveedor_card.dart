@@ -29,15 +29,19 @@ class ProveedorCard extends StatelessWidget {
                 subtitle: Text(model.localizacion)),
             ListTile(
                 leading: const Icon(Icons.local_phone),
-                trailing: Expanded(
-                  child: RatingBar.builder(
-                    itemSize: 20,
-                    itemCount: 5,
-                    initialRating: 3.4,
-                    itemBuilder: (context, _) {
-                      return const Icon(Icons.star, color: Colors.amber);
-                    },
-                    onRatingUpdate: (rating) {}),
+                trailing: Column(
+                  children: [
+                    Expanded(
+                      child: RatingBar.builder(
+                        itemSize: 20,
+                        itemCount: 5,
+                        initialRating: 3.4,
+                        itemBuilder: (context, _) {
+                          return const Icon(Icons.star, color: Colors.amber);
+                        },
+                        onRatingUpdate: (rating) {}),
+                    ),
+                  ],
                 ),
                 title: Text(model.contacto))
           ],

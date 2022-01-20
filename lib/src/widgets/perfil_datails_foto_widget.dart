@@ -71,54 +71,53 @@ class _PerfilDetailsFotoWidgetState extends State<PerfilDetailsFotoWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             IconButton(
-                                onPressed: () => _selectImage(ImageSource.camera),
+                                onPressed: () =>
+                                    _selectImage(ImageSource.camera),
                                 icon: const Icon(
                                   Icons.camera,
                                   size: 40.0,
                                 )),
                             IconButton(
-                                onPressed: () => _selectImage(ImageSource.gallery),
+                                onPressed: () =>
+                                    _selectImage(ImageSource.gallery),
                                 icon: const Icon(Icons.image, size: 40.0)),
                             IconButton(
                                 onPressed: () async {
-                                   await _enviaralservidor();
-                                   showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                "Foto añadida",
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              content: SingleChildScrollView(
-                                                  child:
-                                                      ListBody(children: const [
-                                                Text(
-                                                  "Perfil completado exitosamente !!",
+                                  await _enviaralservidor();
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                            "Foto añadida",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          content: SingleChildScrollView(
+                                              child: ListBody(children: const [
+                                            Text(
+                                              "Perfil completado exitosamente !!",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ])),
+                                          actions: [
+                                            TextButton(
+                                                child: const Text(
+                                                  "Aceptar",
                                                   textAlign: TextAlign.center,
                                                 ),
-                                              ])),
-                                              actions: [
-                                                TextButton(
-                                                    child: const Text(
-                                                      "Aceptar",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                const HomePage()),
-                                                      );
-                                                    }),
-                                              ],
-                                            );
-                                          });
-                                   },
-                                icon: const Icon(Icons.save, size: 40.0)
-                            ),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const HomePage()),
+                                                  );
+                                                }),
+                                          ],
+                                        );
+                                      });
+                                },
+                                icon: const Icon(Icons.save, size: 40.0)),
                           ],
                         ),
                       ),
@@ -132,7 +131,7 @@ class _PerfilDetailsFotoWidgetState extends State<PerfilDetailsFotoWidget> {
   }
 
   Future _selectImage(ImageSource source) async {
-     final imageCamera = await ImagePicker().pickImage(source: source);
+    final imageCamera = await ImagePicker().pickImage(source: source);
     if (imageCamera == null) return;
     final imageTemporary = File(imageCamera.path);
     _imagenPerfil = imageTemporary;
@@ -151,5 +150,4 @@ class _PerfilDetailsFotoWidgetState extends State<PerfilDetailsFotoWidget> {
       });
     });
   }
-
 }

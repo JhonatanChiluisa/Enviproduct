@@ -19,6 +19,7 @@ class _ParadasWidgetState extends State<ParadasWidget> {
     super.initState();
     _downloadContent();
   }
+
   @override
   Widget build(BuildContext context) {
     return _listStop == null
@@ -39,10 +40,10 @@ class _ParadasWidgetState extends State<ParadasWidget> {
               );
   }
 
-  _downloadContent() {
-    _stopservice.getStop().then((value) {
-      _listStop = value;
+  _downloadContent() async {
+    _listStop = await _stopservice.getStop();
+    if (mounted){
       setState(() {});
-    });
+    }
   }
 }

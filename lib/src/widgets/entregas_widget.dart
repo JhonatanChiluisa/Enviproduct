@@ -15,39 +15,45 @@ class _EntregaWidgetState extends State<EntregaWidget> {
   List<Entregas>? _listEntregas;
 
   @override
-
-   void initState() {
+  void initState() {
     super.initState();
     _downloadContent();
   }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
-        title: const Text("Pendientes"), 
-        ) ,
+        title: const Text("Pendientes"),
+      ),
       body: _listEntregas == null
-        ? const Center(
-            child: SizedBox(
-                height: 50.0, width: 50.0, child: CircularProgressIndicator()),
-          )
-        : _listEntregas!.isEmpty
-            ? const Center(
-                child: SizedBox(child: Text('No hay entregas disponibles')),
-              )
-            : Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 7.0),
-                child: ListView(
-                  children: _listEntregas!.map((e) => CardEntregas(model: e)).toList(),
+          ? const Center(
+              child: SizedBox(
+                  height: 50.0,
+                  width: 50.0,
+                  child: CircularProgressIndicator()),
+            )
+          : _listEntregas!.isEmpty
+              ? const Center(
+                  child: SizedBox(child: Text('No hay entregas disponibles')),
+                )
+              : Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 7.0),
+                  child: ListView(
+                    children: _listEntregas!
+                        .map((e) => CardEntregas(model: e))
+                        .toList(),
+                  ),
                 ),
-              ),
-      ));
+    ));
   }
-  _downloadContent() {
-    _entregaService.getEntregas().then((value) {
-      _listEntregas = value;
+
+  _downloadContent() async {
+    _listEntregas = await _entregaService.getEntregas();
+    if(mounted){
       setState(() {});
-    });
+    }
   }
 }
