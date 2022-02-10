@@ -19,10 +19,7 @@ class InicioWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
           const Text("Menú Principal", style: TextStyle(fontSize: 40.0)),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Image.asset("assets/images/logoEnviproducts.png"),
-          ),
+          //Image.asset("assets/images/logoEnviproducts.png"),
           Card(
             elevation: 7.0,
             child: ListTile(
