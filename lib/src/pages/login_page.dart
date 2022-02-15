@@ -1,11 +1,13 @@
 import 'package:application_enviproduct_v01/src/bloc/login_bloc.dart';
-import 'package:application_enviproduct_v01/src/models/usario_model.dart';
+
+import 'package:application_enviproduct_v01/src/pages/home_page.dart';
 import 'package:application_enviproduct_v01/src/providers/main_provider.dart';
 import 'package:application_enviproduct_v01/src/services/usuario_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer' as developer;
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -13,19 +15,26 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+late bool _succes = false;
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final TextEditingController _emailController = TextEditingController();
+final TextEditingController _passwordController = TextEditingController();
+
 class _LoginPageState extends State<LoginPage> {
   late LoginBloc bloc;
   UsuarioService usuarioService = UsuarioService();
   bool _obscureText = true;
-  
+
   @override
   void initState() {
     bloc = LoginBloc();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    // ignore: unused_local_variable
     final mainProvider = Provider.of<MainProvider>(context);
     return SafeArea(
         child: Scaffold(
@@ -33,7 +42,6 @@ class _LoginPageState extends State<LoginPage> {
       Container(
         color: Theme.of(context).primaryColorDark,
         height: size.height * 0.4,
-        
       ),
       SingleChildScrollView(
         child: Center(
@@ -63,22 +71,24 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         StreamBuilder(
-                          stream: bloc.emailStream,
-                          builder: (BuildContext context,
-                                    AsyncSnapshot snapshot) => TextField(
-                                      keyboardType: TextInputType.emailAddress,
-                                      onChanged: bloc.changeEmail,
-                                decoration: InputDecoration(
-                                    errorText: snapshot.error?.toString(),
-                                    icon: const Icon(Icons.email),
-                                    hintText: 'usuario@enviproducts.org',
-                                    labelText: 'Correo electrónico'))
-                        ),
+                            stream: bloc.emailStream,
+                            builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) =>
+                                TextField(
+                                    controller: _emailController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    onChanged: bloc.changeEmail,
+                                    decoration: InputDecoration(
+                                        errorText: snapshot.error?.toString(),
+                                        icon: const Icon(Icons.email),
+                                        hintText: 'usuario@enviproducts.org',
+                                        labelText: 'Correo electrónico'))),
                         StreamBuilder(
                             stream: bloc.passwordStream,
                             builder: (BuildContext context,
                                     AsyncSnapshot snapshot) =>
                                 TextField(
+                                    controller: _passwordController,
                                     onChanged: bloc.changePassword,
                                     obscureText: _obscureText,
                                     decoration: InputDecoration(
@@ -105,16 +115,14 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton.icon(
                                     onPressed: snapshot.hasData
                                         ? () async {
-                                            Usuario usuario = Usuario(
-                                                email: bloc.email,
-                                                password: bloc.password);
-                                            Map<String, dynamic> resp =
-                                                await usuarioService
-                                                    .login(usuario);
-                                            if (resp.containsKey("idToken")) {
-                                              developer.log(resp["idToken"]);
-                                              mainProvider.token =
-                                                  resp['idToken'];
+                                            await _userlogin();
+                                            if (_succes) {
+                                              await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const HomePage()));
+                                              setState(() {});
                                             }
                                           }
                                         : null,
@@ -142,5 +150,21 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     ])));
+  }
+
+  Future<void> _userlogin() async {
+    final User user = (await _auth.signInWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    ))
+        .user!;
+
+    if (user.uid.isNotEmpty) {
+      setState(() {
+        _succes = true;
+      });
+    } else {
+      _succes = false;
+    }
   }
 }

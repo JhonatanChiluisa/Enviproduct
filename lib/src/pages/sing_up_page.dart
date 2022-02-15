@@ -1,6 +1,10 @@
 import 'package:application_enviproduct_v01/src/bloc/singup_bloc.dart';
+import 'package:application_enviproduct_v01/src/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class SingUpPage extends StatefulWidget {
   const SingUpPage({Key? key}) : super(key: key);
 
@@ -8,15 +12,26 @@ class SingUpPage extends StatefulWidget {
   State<SingUpPage> createState() => _SingUpPageState();
 }
 
+// ignore: unused_element
+late bool? _success;
+// ignore: unused_element
+late String _userEmail = '';
+late String us = "";
+
 class _SingUpPageState extends State<SingUpPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   late SignUpBloc bloc;
   bool _obscureText = true;
-
+  final displayname = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
   @override
   void initState() {
     bloc = SignUpBloc();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -26,7 +41,6 @@ class _SingUpPageState extends State<SingUpPage> {
       Container(
         color: Theme.of(context).primaryColorDark,
         height: size.height * 0.4,
-        
       ),
       SingleChildScrollView(
         child: Center(
@@ -60,29 +74,32 @@ class _SingUpPageState extends State<SingUpPage> {
                             builder: (BuildContext context,
                                     AsyncSnapshot snapshot) =>
                                 TextField(
-                                  keyboardType: TextInputType.text,
+                                    controller: displayname,
+                                    keyboardType: TextInputType.text,
                                     onChanged: bloc.changeUsername,
                                     decoration: InputDecoration(
                                         errorText: snapshot.error?.toString(),
                                         icon: const Icon(Icons.account_circle),
                                         labelText: 'Nombre'))),
                         StreamBuilder(
-                          stream: bloc.emailStream,
-                          builder: (BuildContext context,
-                                    AsyncSnapshot snapshot) => TextField(
-                                      keyboardType: TextInputType.emailAddress,
-                                      onChanged: bloc.changeEmail,
-                                decoration: InputDecoration(
-                                    errorText: snapshot.error?.toString(),
-                                    icon: const Icon(Icons.email),
-                                    hintText: 'usuario@enviproducts.org',
-                                    labelText: 'Correo electrónico'))
-                        ),
+                            stream: bloc.emailStream,
+                            builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) =>
+                                TextField(
+                                    controller: email,
+                                    keyboardType: TextInputType.emailAddress,
+                                    onChanged: bloc.changeEmail,
+                                    decoration: InputDecoration(
+                                        errorText: snapshot.error?.toString(),
+                                        icon: const Icon(Icons.email),
+                                        hintText: 'usuario@enviproducts.org',
+                                        labelText: 'Correo electrónico'))),
                         StreamBuilder(
                             stream: bloc.passwordStream,
                             builder: (BuildContext context,
                                     AsyncSnapshot snapshot) =>
                                 TextField(
+                                    controller: password,
                                     onChanged: bloc.changePassword,
                                     obscureText: _obscureText,
                                     decoration: InputDecoration(
@@ -107,7 +124,17 @@ class _SingUpPageState extends State<SingUpPage> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20.0),
                                 child: ElevatedButton.icon(
-                                    onPressed: (){},
+                                    onPressed: () async {
+                                      await _registerintheDDB();
+                                      if (_success = true) {
+                                        await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginPage()));
+                                        setState(() {});
+                                      }
+                                    },
                                     icon: const Icon(Icons.person_add),
                                     label: const Text("Registrar")),
                               );
@@ -120,5 +147,38 @@ class _SingUpPageState extends State<SingUpPage> {
         ),
       ),
     ])));
+  }
+
+  Future<void> _sentoserver() async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
+      CollectionReference reference;
+      reference = FirebaseFirestore.instance.collection('usuarios');
+      await reference.add({
+        "uid": us,
+        "email": email.text,
+        "password": password.text,
+        "displayname": displayname.text
+      });
+    });
+  }
+
+  Future<void> _registerintheDDB() async {
+    final User? user = (await _auth.createUserWithEmailAndPassword(
+      email: email.text,
+      password: password.text,
+    ))
+        .user;
+    us = user!.uid;
+    // ignore: unnecessary_null_comparison
+    if (user != null) {
+      await _sentoserver();
+
+      setState(() {
+        _success = true;
+        _userEmail = user.email ?? '';
+      });
+    } else {
+      _success = false;
+    }
   }
 }

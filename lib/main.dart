@@ -10,6 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
@@ -24,19 +25,14 @@ late AndroidNotificationChannel channel;
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-
-
-
-
-
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting();
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    if (!kIsWeb) {
+  if (!kIsWeb) {
     channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
       'High Importance Notifications', // title
@@ -85,7 +81,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
@@ -93,7 +88,7 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? value) => developer.log(value.toString()));
-    
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
@@ -114,12 +109,10 @@ class _MyAppState extends State<MyApp> {
       }
     });
 
-   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       developer.log('A new onMessageOpenedApp event was published!');
     });
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -129,28 +122,31 @@ class _MyAppState extends State<MyApp> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ScreenUtilInit(
-              designSize: const Size(360, 690),
-              builder: () => MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'Flutter Demo',
-                theme: ThemeData(brightness: mainProvider.mode == true ? Brightness.light: Brightness.dark, primarySwatch: Colors.green),
-                routes: {
-                  "/singUp": (context) => const SingUpPage(),
-                  "/settings": (context) => const SettingPage(),
-                },
-                home: mainProvider.token == ""
-                  ? const LoginPage()
+                designSize: const Size(360, 690),
+                builder: () => MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    title: 'Flutter Demo',
+                    theme: ThemeData(
+                        brightness: mainProvider.mode == true
+                            ? Brightness.light
+                            : Brightness.dark,
+                        primarySwatch: Colors.green),
+                    routes: {
+                      "/singUp": (context) => const SingUpPage(),
+                      "/settings": (context) => const SettingPage(),
+                    },
+                    home: mainProvider.token == ""
+                        ? const LoginPage()
                         : JwtDecoder.isExpired(mainProvider.token)
                             ? const LoginPage()
-                            : const HomePage()
-              ));
+                            : const HomePage()));
           }
           return const SizedBox.square(
-            dimension: 100.0, child: CircularProgressIndicator());
+              dimension: 100.0, child: CircularProgressIndicator());
         });
   }
 
-   _setupToken() async {
+  _setupToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
     developer.log(token ?? "");
   }
