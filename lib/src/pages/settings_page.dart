@@ -1,8 +1,8 @@
+import 'package:application_enviproduct_v01/src/pages/login_page.dart';
 import 'package:application_enviproduct_v01/src/providers/main_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'dart:developer' as developer;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,9 +11,6 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final mainProvider = Provider.of<MainProvider>(context, listen: false);
-    Map<String, dynamic> values = JwtDecoder.decode(mainProvider.token);
-    developer.log(values.toString());
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: const Text("Enviproducts - Ajustes")),
@@ -24,9 +21,13 @@ class SettingPage extends StatelessWidget {
               title: const Text("Cerrar sesión"),
               trailing: IconButton(
                   tooltip: "Cerrar sesión",
-                  onPressed: () {
-                    mainProvider.token = "";
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                    );
                   },
                   icon: const Icon(Icons.logout)),
             ),
@@ -50,8 +51,8 @@ class SettingMode extends StatelessWidget {
         title: const Text("Modo claro"),
         subtitle: const Text("Habilitar / deshabilitar el modo claro"),
         trailing: Switch(
-          activeColor: Colors.lightGreen,
-          inactiveThumbColor: Colors.tealAccent,
+            activeColor: Colors.lightGreen,
+            inactiveThumbColor: Colors.tealAccent,
             value: mainProvider.mode,
             onChanged: (bool value) async {
               mainProvider.mode = value;

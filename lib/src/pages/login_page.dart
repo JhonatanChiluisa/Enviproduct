@@ -1,5 +1,4 @@
 import 'package:application_enviproduct_v01/src/bloc/login_bloc.dart';
-
 import 'package:application_enviproduct_v01/src/pages/home_page.dart';
 import 'package:application_enviproduct_v01/src/providers/main_provider.dart';
 import 'package:application_enviproduct_v01/src/services/usuario_service.dart';
@@ -153,18 +152,52 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _userlogin() async {
-    final User user = (await _auth.signInWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    ))
-        .user!;
+    try {
+      final User user = (await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ))
+          .user!;
 
-    if (user.uid.isNotEmpty) {
-      setState(() {
-        _succes = true;
-      });
-    } else {
-      _succes = false;
+      if (user.uid.isNotEmpty) {
+        setState(() {
+          _succes = true;
+        });
+      } else {
+        _succes = false;
+      }
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text(
+                "Usuario no encontrado !",
+                textAlign: TextAlign.center,
+              ),
+              content: SingleChildScrollView(
+                  child: ListBody(children: const [
+                Text(
+                  "Verifique e intente nuevamente",
+                  textAlign: TextAlign.center,
+                ),
+              ])),
+              actions: [
+                TextButton(
+                    child: const Text(
+                      "Aceptar",
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                      );
+                    }),
+              ],
+            );
+          });
     }
   }
 }

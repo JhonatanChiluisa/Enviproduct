@@ -134,6 +134,7 @@ class _MyAppState extends State<MyApp> {
                     routes: {
                       "/singUp": (context) => const SingUpPage(),
                       "/settings": (context) => const SettingPage(),
+                      "/logIn": (context) => const LoginPage(),
                     },
                     home: mainProvider.token == ""
                         ? const LoginPage()

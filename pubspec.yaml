@@ -53,8 +53,7 @@ dependencies:
   google_maps_flutter: ^2.1.1
   firebase_auth: ^3.3.7
   table_calendar: ^3.0.3
-  intl: ^0.17.0
-  
+  intl: ^0.17.0  
 dependency_overrides:
   plugin_platform_interface: ^2.1.2
   
