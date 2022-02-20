@@ -1,6 +1,5 @@
 import 'package:application_enviproduct_v01/src/pages/login_page.dart';
 import 'package:application_enviproduct_v01/src/providers/main_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +10,7 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mainProvider = Provider.of<MainProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: const Text("Enviproducts - Ajustes")),
@@ -21,13 +21,12 @@ class SettingPage extends StatelessWidget {
               title: const Text("Cerrar sesión"),
               trailing: IconButton(
                   tooltip: "Cerrar sesión",
-                  onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
+                  onPressed: () {
+                    mainProvider.token = "";
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
-                    );
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()));
                   },
                   icon: const Icon(Icons.logout)),
             ),

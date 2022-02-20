@@ -52,7 +52,7 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
               Theme.of(context).primaryColor,
-              Theme.of(context).primaryColorDark,
+              Colors.greenAccent,
             ])),
           ),
           Column(
@@ -97,7 +97,6 @@ class _ProveedorFormPageState extends State<ProveedorFormPage> {
                             }).toList(),
                           ),
                           TextFormField(
-
                               validator: (value) {
                                 return _validateNombre(value!);
                               },

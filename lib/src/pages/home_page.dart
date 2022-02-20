@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'dart:developer' as developer;
-
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:application_enviproduct_v01/src/utils/main_menu.dart';
 import 'package:application_enviproduct_v01/src/widgets/tablero_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
- final List<String> _options = ["Menú", "Mapa", "Paradas", "Entregas"];
-
-
+final List<String> _options = ["Menú", "Mapa", "Paradas", "Entregas"];
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,40 +39,51 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-     
     return Scaffold(
-      drawer: Drawer(
-          child: ListView(
-        children: [
-          ListTile(
-            onTap: () {
-              Navigator.pushNamed(context, "/settings");
-            },
-            leading: const Icon(Icons.settings),
-            title: const Text("Ajustes"),
-          )
-        ],
-      )),
-      appBar: AppBar(
-          centerTitle: true,
-          title: Text('Enviproducts - ' + _options[_currentIndex])),
-      body: _connectionStatus == ConnectivityResult.none 
-        ? TableroWidget(
-          titulo: MenuItem("No hay internet", Icons.cloud_off),
-          descripcion: "Verifique la conexión")
-        : PageStorage(bucket: _bucket, child: contentWidgets[_currentIndex]),
-      bottomNavigationBar: BottomNavigationBar(
+        drawer: Drawer(
+            child: ListView(
+          children: [
+            ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, "/settings");
+              },
+              leading: const Icon(Icons.settings),
+              title: const Text("Ajustes"),
+            )
+          ],
+        )),
+        appBar: AppBar(
+            centerTitle: true,
+            title: Text('Enviproducts - ' + _options[_currentIndex])),
+        body: _connectionStatus == ConnectivityResult.none
+            ? TableroWidget(
+                titulo: MenuItem("No hay internet", Icons.cloud_off),
+                descripcion: "Verifique la conexión")
+            : PageStorage(
+                bucket: _bucket, child: contentWidgets[_currentIndex]),
+        bottomNavigationBar: CurvedNavigationBar(
+          height: 60.0,
+          color: Colors.green,
+          backgroundColor: Colors.white10,
+          animationCurve: Curves.easeInOut,
+          buttonBackgroundColor: Colors.green,
+          items: const <Widget>[
+            Icon(
+              Icons.menu,
+              size: 30,
+              color: Colors.white,
+            ),
+            Icon(Icons.map_outlined, size: 30, color: Colors.white),
+            Icon(Icons.location_on_outlined, size: 30, color: Colors.white),
+            Icon(Icons.assignment_outlined, size: 30, color: Colors.white)
+          ],
           onTap: (int index) {
-             _currentIndex = index;
-            setState(() {});
+            setState(() {
+              _currentIndex = index;
+            });
           },
-          type: BottomNavigationBarType.fixed,
-          items: menuOptions
-              .map((e) =>
-                  BottomNavigationBarItem(label: e.label, icon: Icon(e.icon)))
-              .toList(),
-          currentIndex: _currentIndex),
-    );
+          letIndexChange: (index) => true,
+        ));
   }
 
   Future<void> initConnectivity() async {
@@ -102,5 +111,4 @@ class _HomePageState extends State<HomePage> {
       _connectionStatus = result;
     });
   }
-
 }

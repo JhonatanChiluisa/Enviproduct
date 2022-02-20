@@ -39,8 +39,17 @@ class _LoginPageState extends State<LoginPage> {
         child: Scaffold(
             body: Stack(children: [
       Container(
-        color: Theme.of(context).primaryColorDark,
         height: size.height * 0.4,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+              Theme.of(context).primaryColor,
+              Colors.tealAccent,
+              Colors.greenAccent,
+              Colors.teal
+            ])),
       ),
       SingleChildScrollView(
         child: Center(
@@ -53,8 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 25.0),
                   child: Text("Iniciar sesión",
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                          color: Theme.of(context).scaffoldBackgroundColor)),
+                      style: Theme.of(context).textTheme.headline4!),
                 ),
                 Container(
                     margin: const EdgeInsets.symmetric(
