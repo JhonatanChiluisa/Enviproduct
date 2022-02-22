@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-final List<String> _options = ["Menú", "Mapa", "Paradas", "Entregas"];
+final List<String> _options = ["Menú", "Paradas", "Entregas"];
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> {
             ),
             Icon(Icons.map_outlined, size: 30, color: Colors.white),
             Icon(Icons.location_on_outlined, size: 30, color: Colors.white),
-            Icon(Icons.assignment_outlined, size: 30, color: Colors.white)
           ],
           onTap: (int index) {
             setState(() {

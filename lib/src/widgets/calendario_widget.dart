@@ -39,47 +39,57 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
           title: const Text("Calendario"),
           centerTitle: true,
         ),
-        body: TableCalendar(
-          locale: 'es_ES',
-          focusedDay: selectedDay,
-          firstDay: DateTime(1990),
-          lastDay: DateTime(2050),
-          calendarFormat: format,
-          onFormatChanged: (CalendarFormat _format) {
-            setState(() {
-              format = _format;
-            });
-          },
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          daysOfWeekVisible: true,
-          //cambiar dia
-          onDaySelected: (DateTime selecteDay, DateTime focuseDay) {
-            setState(() {
-              selectedDay = selecteDay;
-              focusedDay = focuseDay;
-            });
-            //print(focuseDay);
-          },
-          selectedDayPredicate: (DateTime date) {
-            return isSameDay(selectedDay, date);
-          },
-          eventLoader: _getEventsForDay,
-          calendarStyle: const CalendarStyle(
-            isTodayHighlighted: true,
-            selectedDecoration: BoxDecoration(
-              color: Colors.green,
-              shape: BoxShape.rectangle,
+        body: Column(
+          children: [
+            TableCalendar(
+              locale: 'es_ES',
+              focusedDay: selectedDay,
+              firstDay: DateTime(1990),
+              lastDay: DateTime(2050),
+              calendarFormat: format,
+              onFormatChanged: (CalendarFormat _format) {
+                setState(() {
+                  format = _format;
+                });
+              },
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              daysOfWeekVisible: true,
+              //cambiar dia
+              onDaySelected: (DateTime selecteDay, DateTime focuseDay) {
+                setState(() {
+                  selectedDay = selecteDay;
+                  focusedDay = focuseDay;
+                });
+                //print(focuseDay);
+              },
+              selectedDayPredicate: (DateTime date) {
+                return isSameDay(selectedDay, date);
+              },
+              eventLoader: _getEventsForDay,
+
+              calendarStyle: const CalendarStyle(
+                isTodayHighlighted: true,
+                selectedDecoration: BoxDecoration(
+                  color: Colors.green,
+                  shape: BoxShape.rectangle,
+                ),
+                selectedTextStyle: TextStyle(color: Colors.white),
+                todayDecoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  shape: BoxShape.rectangle,
+                ),
+              ),
+              headerStyle: const HeaderStyle(
+                formatButtonVisible: false,
+                titleCentered: true,
+              ),
             ),
-            selectedTextStyle: TextStyle(color: Colors.white),
-            todayDecoration: BoxDecoration(
-              color: Colors.blueAccent,
-              shape: BoxShape.rectangle,
+            ..._getEventsForDay(selectedDay).map(
+              (Event event) => ListTile(
+                title: Text(event.title),
+              ),
             ),
-          ),
-          headerStyle: const HeaderStyle(
-            formatButtonVisible: false,
-            titleCentered: true,
-          ),
+          ],
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => showDialog(
@@ -91,7 +101,7 @@ class _CalendarioWidgetState extends State<CalendarioWidget> {
               ),
               actions: [
                 TextButton(
-                  child: const Text('Cancelar'),
+                  child: const Text('Canselar'),
                   onPressed: () => Navigator.pop(context),
                 ),
                 TextButton(
